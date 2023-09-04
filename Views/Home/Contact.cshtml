@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>İletişim Formu</title>
+</head>
+<body>
+
+    <h1>İletişim Formu</h1>
+
+    <form action="/" method="post">
+        <div class="form-group">
+            <label for="ad">Adınız</label>
+            <input type="text" class="form-control" id="ad" name="ad" />
+        </div>
+        <div class="form-group">
+            <label for="soyad">Soyadınız</label>
+            <input type="text" class="form-control" id="soyad" name="soyad" />
+        </div>
+        <div class="form-group">
+            <label for="tarih">Doğum Tarihiniz</label>
+            <input type="date" class="form-control" id="tarih" name="tarih" />
+        </div>
+        <div class="form-group">
+            <label for="yas">Yaşınız</label>
+            <input type="number" class="form-control" id="yas" name="yas" />
+        </div>
+        <div class="form-group">
+            <label for="sehir">Şehriniz</label>
+            <select class="form-control" id="sehir" name="sehir">
+                <option value="İstanbul">İstanbul</option>
+                <option value="Ankara">Ankara</option>
+                <option value="İzmir">İzmir</option>
+                <option value="Bursa">Bursa</option>
+                <option value="Adana">Adana</option>
+                <option value="Antalya">Antalya</option>
+                <option value="Trabzon">Trabzon</option>
+                <option value="Eskişehir">Eskişehir</option>
+            </select>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Gönder" />
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            $("form").submit(function (event) {
+                event.preventDefault();
+
+                var ad = $("#ad").val();
+                var soyad = $("#soyad").val();
+                var tarih = $("#tarih").val();
+                var yas = $("#yas").val();
+                var sehir = $("#sehir").val();
+
+                
+                if (ad && soyad && tarih && yas && sehir) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/Post", 
+                        data: {
+                            ad: ad,
+                            soyad: soyad,
+                            tarih: tarih,
+                            yas: yas,
+                            sehir: sehir,
+                        },
+                        success: function (data) {
+                           
+                            $("#mesaj").text("Bilgileriniz başarıyla gönderildi.");
+                        },
+                        error: function (err) {
+                            $("#mesaj").text("Form verilerini gönderirken bir hata oluştu.");
+                        },
+                    });
+
+                } else {
+                    ViewBag.Mesaj = "Lütfen tüm alanları doldurun.";
+                }
+                return false;
+            });
+        });
+
+    </script>
+
+</body>
+</html>
