@@ -1,16 +1,16 @@
 ﻿<!DOCTYPE html>
 <html lang="tr">
 <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>İletişim Formu</title>
 </head>
 <body>
-
     <h1>İletişim Formu</h1>
 
-    <form action="/" method="post">
+    <form id="contactForm" method="post">
         <div class="form-group">
             <label for="ad">Adınız</label>
             <input type="text" class="form-control" id="ad" name="ad" />
@@ -42,10 +42,11 @@
         </div>
         <input type="submit" class="btn btn-primary" value="Gönder" />
     </form>
+    <div id="mesaj" class="alert"></div>
 
     <script>
         $(document).ready(function () {
-            $("form").submit(function (event) {
+            $("#contactForm").submit(function (event) {
                 event.preventDefault();
 
                 var ad = $("#ad").val();
@@ -54,11 +55,10 @@
                 var yas = $("#yas").val();
                 var sehir = $("#sehir").val();
 
-                
                 if (ad && soyad && tarih && yas && sehir) {
                     $.ajax({
                         type: "POST",
-                        url: "/Home/Post", 
+                        url: "/Home/Post",
                         data: {
                             ad: ad,
                             soyad: soyad,
@@ -67,16 +67,18 @@
                             sehir: sehir,
                         },
                         success: function (data) {
-                           
                             $("#mesaj").text("Bilgileriniz başarıyla gönderildi.");
+                            $("#mesaj").removeClass("alert-danger").addClass("alert-success");
                         },
                         error: function (err) {
                             $("#mesaj").text("Form verilerini gönderirken bir hata oluştu.");
+                            $("#mesaj").removeClass("alert-success").addClass("alert-danger");
                         },
                     });
 
                 } else {
-                    ViewBag.Mesaj = "Lütfen tüm alanları doldurun.";
+                    $("#mesaj").text("Lütfen tüm alanları doldurun.");
+                    $("#mesaj").removeClass("alert-success").addClass("alert-danger");
                 }
                 return false;
             });

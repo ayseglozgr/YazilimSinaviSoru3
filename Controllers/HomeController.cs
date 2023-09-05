@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using YazilimSinaviSoru3.Models;
 
 namespace YazilimSinaviSoru3.Controllers
 {
@@ -20,10 +21,16 @@ namespace YazilimSinaviSoru3.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post(string ad, string soyad, string tarih, int yas, string sehir)
+        public ActionResult Post(string ad, string soyad, DateTime tarih, int yas, string sehir)
         {
-            
-            ViewBag.Mesaj = "Bilgileriniz başarıyla gönderildi.";
+            var contactModel = new ContactModel
+            {
+                Ad = ad,
+                Soyad = soyad,
+                Tarih = tarih,
+                Yas = yas,
+                Sehir = sehir
+            };
 
             return View("Contact");
         }
